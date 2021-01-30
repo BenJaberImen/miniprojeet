@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="bootstrap4/css/bootstrap.min.css" rel="stylesheet">
+    <title></title>
+
+    <script>
+        var xhr = new XMLHttpRequest();
+        var urltouttype = 'https://appessat707.000webhostapp.com/pfespartypes.php?type=';
+        var urlpfes = 'https://appessat707.000webhostapp.com/pfes.php';
+        var type;
+
+        function charge() {
+
+
+            xhr.open('GET', urlpfes, true);
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    remplir(type, xhr.responseXML);
+                    sommepfes(xhr.responseXML);
+
+                }
+            }
+
+        }
+
+        function chargeselontype(type) {
+
+
+
+            document.querySelector('.active').classList.remove('active');
+            event.currentTarget.classList.add('active');
+            var urltype = urltouttype + type;
+            // console.log(urlQuery);
+            xhr.open('GET', urltype, true);
+
+
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+
+                    remplir(type, xhr.responseXML);
+                    sommepfes(xhr.responseXML);
+
+                    //compter(xhr.responseXML);
+
+                }
+            }
+
+        }
+
+        function remplir(type, data) {
+            var tbody = document.querySelector('tbody');
+            var els = data.getElementsByTagName('pfe');
+            var countels = els.length;
+
+            tbody.innerHTML = "";
+            for (var i = 0; i < countels; i++) {
+                var tr = document.createElement('tr');
+                var id = document.createElement('td');
+                var titre = document.createElement('td');
+                var type = document.createElement('td');
+
+                id.innerHTML = els[i].getAttribute('id');
+                titre.innerHTML = els[i].getAttribute('titre');
+                type.innerHTML = els[i].getAttribute('type');
+
+                tr.appendChild(id);
+                tr.appendChild(titre);
+                tr.appendChild(type);
+
+                tbody.appendChild(tr);
+
+            }
+        }
+
+        function sommepfes(data) {
+            var els = data.getElementsByTagName('pfe');
+            //var typ=document.getElementById('type');
+
+            var compttelecom = 0;
+            var comptdev = 0;
+            var comptres = 0;
+            var compteemb = 0;
+            for (var i = 0; i < els.length; i++) {
+                //  console.log(els[i].getAttribute('type'));
+                if (els[i].getAttribute('type') == "Telecom") {
+                    compttelecom++;
+
+                }
+                if (els[i].getAttribute('type') == "Developpement") {
+                    comptdev++;
+
+                }
+                if (els[i].getAttribute('type') == "Reseaux") {
+                    comptres++;
+
+                }
+                if (els[i].getAttribute('type') == "Embarques et IoT") {
+                    compteemb++;
+
+                }
+                // console.log = (comptt);
+
+            }
+            var a = document.getElementById('totale');
+            var a1 = document.getElementById('totaletelecom');
+            var a2 = document.getElementById('totaledev');
+            var a3 = document.getElementById('totalres');
+            var a4 = document.getElementById('totaleemb');
+
+            a.innerHTML = els.length;
+            a1.innerHTML = compttelecom;
+            a2.innerHTML = comptdev;
+            a3.innerHTML = comptres;
+            a4.innerHTML = compteemb;
+
+
+        }
+    </script>
+</head>
+
+<body>
+
+    <body onload="charge()">
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col ">
+                    <div class=" card card-header bg-primary text-white ">
+                        <h1> Catalogue des PFEs (ESSAT)</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3  mt-2">
+
+                    <div class="list-group-item ">
+
+                        <li class="list-group-item list-group-item-action active  ">
+                            <a href="#" class="btn   " onclick="charge()" id="mess"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-grid-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
+                                          </svg> Tous les PFEs </a> <span class="badge badge-warning badge-pill" id="totale"></span>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action  ">
+                            <a href="#" class="btn  " onclick="chargeselontype('Telecom')"> <svg width="1em" height="1em " viewBox="0 0 16 16 " class="bi bi-grid-fill " fill="currentColor
+                                            " xmlns="http://www.w3.org/2000/svg ">
+                                     <path fill-rule="evenodd " d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8
+                                            8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z "/>
+                                    </svg> PFEs Télécom</a><span class="badge badge-primary badge-pill" id="totaletelecom"></span>
+                        </li>
+
+                        <li class="list-group-item list-group-item-action "> <a href="# " class="btn " onclick="chargeselontype('Developpement') " id="PFEsDéveleppement "><svg width="1em " height="1em " viewBox="0 0 16 16 " class="bi bi-grid-fill " fill="currentColor
+                                        " xmlns="http://www.w3.org/2000/svg ">
+                                 <path fill-rule="evenodd " d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8
+                                        8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z "/>
+                                </svg> PFEs Developement </a><span class="badge badge-primary badge-pill" id="totaledev"></span>
+                        </li>
+                        <li class="list-group-item list-group-item-action ">
+                            <a href="# " class="btn " onclick="chargeselontype('reseaux')"> <svg width="1em " height="1em " viewBox="0 0 16 16 " class="bi bi-grid-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
+                                            <path fill-rule="evenodd " d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9
+                                            5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z "/>
+                                          </svg> PFEs Reseaux </a> <span class="badge badge-primary badge-pill" id="totalres"></span>
+                        </li>
+                        <li class="list-group-item list-group-item-action ">
+                            <a href="# " class="btn " onclick="chargeselontype('Embarques et IoT')"> <svg width="1em " height="1em " viewBox="0 0 16 16 " class="bi bi-grid-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
+                                            <path fill-rule="evenodd " d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9
+                                            5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z "/>
+                                          </svg> PFEs Embarque et IOT </a><span class="badge badge-primary badge-pill" id="totaleemb"></span>
+
+                        </li>
+                    </div>
+
+
+                </div>
+                <div class="col mt-2">
+                    <div class="card ">
+
+                        <table id="tab " class="table">
+                            <div class="col card-card header ">
+                                <thead>
+                                    <tr class="bg-success text-white ">
+                                        <th colspan="3 ">
+                                            <h4 class="bg-success text-white p-2 pl-4 m-0 rounded-top">Liste des PFEs</h4>
+                                        </th>
+                                    </tr>
+
+
+                                    <tr class="bg-light">
+                                        <th>Id</th>
+                                        <th>Titre</th>
+                                        <th>Type</th>
+                                    </tr>
+                            </div>
+                            </thead>
+
+
+
+
+
+                    </div>
+                    <tbody>
+
+                    </tbody>
+                    </table>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </body>
+
+</body>
+
+</html>
